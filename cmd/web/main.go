@@ -1,11 +1,15 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 )
 
+// page 82
 func main() {
+	addr := flag.String("addr", ":4000", "HTTP Network Address")
+	flag.Parse()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/snippet", showSnippet)
@@ -17,7 +21,7 @@ func main() {
 	// use the mux.Handle() function to register the file server as the handler
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
-	log.Println("Starting server on port 4000")
-	err := http.ListenAndServe(":4000", mux)
+	log.Printf("Starting server on port%s", *addr)
+	err := http.ListenAndServe(*addr, mux)
 	log.Fatal(err)
 }
