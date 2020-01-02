@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
+
 // page 82
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP Network Address")
@@ -15,10 +20,16 @@ func main() {
 	// creates a new logger. standard out, extra text, additional info
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+
+	app := &application{
+		errorLog: errorLog,
+		infoLog:  infoLog,
+	}
+
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet", showSnippet)
-	mux.HandleFunc("/snippet/create", createSnippet)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/snippet", app.showSnippet)
+	mux.HandleFunc("/snippet/create", app.createSnippet)
 
 	// create a file server which serves files out of the './ui/static'
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
