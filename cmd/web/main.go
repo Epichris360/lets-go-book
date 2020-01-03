@@ -12,7 +12,7 @@ type application struct {
 	infoLog  *log.Logger
 }
 
-// page 82
+// page 115 - database time
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP Network Address")
 	flag.Parse()
