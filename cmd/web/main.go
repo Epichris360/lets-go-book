@@ -17,7 +17,7 @@ type application struct {
 	snippets *mysql.SnippetModel
 }
 
-// page 115 - database time
+// page 154 - multiple records. make some other golang apps to practice
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP Network Address")
 	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL database connection")
