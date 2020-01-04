@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"snippetbox/m/pkg/models/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -13,6 +14,7 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snippets *mysql.SnippetModel
 }
 
 // page 115 - database time
@@ -35,6 +37,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snippets: &mysql.SnippetModel{DB: db},
 	}
 
 	// initialize new http.Server struct to carry the error log func, port and mux
