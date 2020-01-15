@@ -3,6 +3,7 @@ package main
 // page 65 in the book
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"snippetbox/m/pkg/models"
 	"strconv"
@@ -61,7 +62,29 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "%v", s)
+	//fmt.Fprintf(w, "%v", s)
+
+	//creating a slice containing the paths to the show.page.tmpl file,
+	//plus the base layout and footer partial that we made earlier
+	files := []string{
+		"./ui/html/show.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+		"./ui/html/footer.partial.tmpl",
+	}
+
+	// Parse the template files
+	ts, err := template.ParseFiles(files...)
+
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	// And then execute them. Notice how the data/struct is passed as a final param
+	err = ts.Execute(w, s)
+
+	if err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
